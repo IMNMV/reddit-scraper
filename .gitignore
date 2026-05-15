@@ -1,0 +1,44 @@
+# Credentials (never commit)
+credentials/reddit_creds.R
+credentials/reddit_creds.py
+credentials/.env
+.env
+
+# Scraped data (too large for git)
+data/
+**/data/raw/
+**/data/processed/
+*.csv
+*.zst
+*.parquet
+checkpoint.json
+
+# Logs
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+
+# R
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp

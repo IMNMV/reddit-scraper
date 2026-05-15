@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this software in academic work, please cite it as below."
+title: "reddit-scraper: crash-safe full-history Reddit scraper"
+authors:
+  - family-names: "Tate"
+    given-names: "Nyk"
+license: MIT
+version: 0.1.0
+date-released: 2026-05-15
+repository-code: "https://github.com/IMNMV/reddit-scraper"
+abstract: >
+  Crash-safe Reddit scraper that pairs the Arctic Shift archive API for
+  full-history post discovery with PRAW for complete comment-tree
+  hydration. Designed for academic NLP research. Writes are row-by-row
+  appends, checkpoints are atomic, and re-running resumes from the last
+  completed batch. Ships with Python and R interfaces.
+keywords:
+  - reddit
+  - scraper
+  - praw
+  - arctic-shift
+  - pushshift
+  - nlp
+  - social-media-research
