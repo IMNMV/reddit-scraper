@@ -2,7 +2,7 @@
 Minimal Python example.
 
 Before running:
-    pip install reddit-scraper
+    pip install git+https://github.com/IMNMV/reddit-scraper.git
     (or, from a clone: pip install -e .)
 
 Then set your credentials in environment variables, or edit the

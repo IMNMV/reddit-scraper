@@ -6,7 +6,10 @@
 # One-time setup:
 #   install.packages("reticulate")
 #   reticulate::virtualenv_create("r-reddit")
-#   reticulate::virtualenv_install("r-reddit", "reddit-scraper")
+#   reticulate::virtualenv_install(
+#     "r-reddit",
+#     "git+https://github.com/IMNMV/reddit-scraper.git"
+#   )
 #
 # Then:
 

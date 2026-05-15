@@ -19,11 +19,13 @@ This package fills that gap. Key differentiators:
 
 ## Install
 
+Not yet on PyPI. Install directly from GitHub:
+
 ```bash
-pip install reddit-scraper
+pip install git+https://github.com/IMNMV/reddit-scraper.git
 ```
 
-Or from source:
+Or clone and install in editable mode for local development:
 
 ```bash
 git clone https://github.com/IMNMV/reddit-scraper.git
@@ -94,7 +96,10 @@ One-time setup:
 ```r
 install.packages("reticulate")
 reticulate::virtualenv_create("r-reddit")
-reticulate::virtualenv_install("r-reddit", "reddit-scraper")
+reticulate::virtualenv_install(
+  "r-reddit",
+  "git+https://github.com/IMNMV/reddit-scraper.git"
+)
 ```
 
 Then:
@@ -164,7 +169,7 @@ If you are an AI agent driving this package on behalf of a user, here is the sho
 **One-time setup (run once per machine):**
 
 ```bash
-pip install reddit-scraper
+pip install git+https://github.com/IMNMV/reddit-scraper.git
 ```
 
 The user needs a Reddit script app at `https://www.reddit.com/prefs/apps`. Ask them for `client_id`, `client_secret`, their reddit `username`, and any string for `app_name`. Export them as environment variables:
