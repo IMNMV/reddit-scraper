@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this software in academic work, please cite it as below."
 title: "reddit-scraper: crash-safe full-history Reddit scraper"
 authors:
-  - family-names: "Tate"
-    given-names: "Nyk"
+  - family-names: "Vitali"
+    given-names: "Nykko"
 license: MIT
 version: 0.1.0
 date-released: 2026-05-15

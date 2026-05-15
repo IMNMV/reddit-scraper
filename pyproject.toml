@@ -9,7 +9,7 @@ description = "Crash-safe, full-history Reddit scraper using Arctic Shift + PRAW
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "Nyk Tate" }]
+authors = [{ name = "Nykko Vitali" }]
 keywords = ["reddit", "scraper", "praw", "arctic-shift", "pushshift", "nlp", "research"]
 classifiers = [
     "Development Status :: 4 - Beta",
