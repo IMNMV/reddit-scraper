@@ -1,8 +1,8 @@
-# reddit-scraper
+# reddit scraper
 
 Crash-safe Reddit scraper for academic NLP research. Pulls **full historical posts** via the Arctic Shift archive API (no 1,000-post Reddit listing cap) and **full comment trees** via PRAW (`replace_more(limit=None, threshold=0)`). Writes row-by-row to CSV with atomic checkpointing, so an interrupted run resumes from the last completed batch.
 
-Built and battle-tested on roughly 1.7 million posts and 3.6 million comments across r/replika, r/CharacterAI, r/MyBoyfriendIsAI, r/ChatGPT, r/ClaudeAI, r/Anthropic, and r/OpenAI.
+Validated on roughly 1.7 million posts and 3.6 million comments across r/replika, r/CharacterAI, r/MyBoyfriendIsAI, r/ChatGPT, r/ClaudeAI, r/Anthropic, and r/OpenAI.
 
 Ships with both a **Python** package + CLI and an **R** wrapper that calls into the Python module via reticulate.
 
@@ -132,6 +132,28 @@ bash scripts/run_subreddit.sh ChatGPT /Users/me/reddit-data
 Logs land at `<base_dir>/logs/<subreddit>_runner.log`. The loop checks `checkpoint.json` after each exit and only stops when `phase == "done"`.
 
 To run several subreddits at once in the background:
+
+```bash
+for s in ChatGPT ClaudeAI Anthropic OpenAI; do
+  bash scripts/run_subreddit.sh "$s" . &
+done
+```
+
+### Surviving laptop sleep and reboots
+
+The scraper does **not** auto-resume when your computer wakes from sleep or boots back up. Background shell processes are killed when the system suspends or shuts down. Your data is safe (every batch is on disk, every checkpoint write is atomic), but you do need to re-run the launcher manually after the machine comes back. When you do, each subreddit picks up from its checkpoint within seconds.
+
+To keep a Mac awake during long runs:
+
+```bash
+caffeinate -i &        # prevents sleep
+# ... start your scrapers ...
+pkill caffeinate       # release when done
+```
+
+Note that `caffeinate` only blocks idle sleep; closing the laptop lid still kills background processes regardless. For multi-day scrapes, keep the lid open or run on a desktop or server.
+
+After a reboot, just re-run the same launch loop:
 
 ```bash
 for s in ChatGPT ClaudeAI Anthropic OpenAI; do
