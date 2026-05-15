@@ -1,25 +1,26 @@
-# Minimal R example.
+# Using reddit-scraper from R via reticulate
+#
+# This package is Python-only, but the R reticulate library can drive it
+# directly with no separate R wrapper required.
 #
 # One-time setup:
-#   install.packages(c("reticulate", "jsonlite", "dplyr", "readr",
-#                      "stringr", "lubridate"))
+#   install.packages("reticulate")
 #   reticulate::virtualenv_create("r-reddit")
 #   reticulate::virtualenv_install("r-reddit", "reddit-scraper")
 #
-# Then copy credentials/template.R to credentials/reddit_creds.R
-# and fill in your four Reddit API values.
+# Then:
 
-source("R/scrape.R")
+library(reticulate)
+use_virtualenv("r-reddit", required = TRUE)
+rs <- import("reddit_scraper")
 
-# One subreddit
-scrape("replika")
+scraper <- rs$RedditScraper(
+  client_id     = Sys.getenv("REDDIT_CLIENT_ID"),
+  client_secret = Sys.getenv("REDDIT_CLIENT_SECRET"),
+  username      = Sys.getenv("REDDIT_USERNAME"),
+  app_name      = Sys.getenv("REDDIT_APP_NAME"),
+  base_dir      = "."
+)
 
-# Several in parallel (macOS / Linux only; keep max_jobs <= 3)
-scrape(c("ChatGPT", "ClaudeAI", "Anthropic"), parallel = TRUE, max_jobs = 3)
-
-# Check progress later
-status(c("replika", "ChatGPT", "ClaudeAI", "Anthropic"))
-
-# Optional: clean and feature-engineer after scraping finishes
-source("R/clean.R")
-clean(c("replika", "ChatGPT", "ClaudeAI", "Anthropic"))
+# Output lands at ./data/raw/replika/{posts,comments,checkpoint}.csv|json
+scraper$scrape_subreddit("replika")
