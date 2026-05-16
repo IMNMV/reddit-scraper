@@ -352,7 +352,7 @@ docs/
 
 If you use this in academic work, see `CITATION.cff` or cite as:
 
-> Vitali, N. (2026). reddit-scraper: crash-safe full-history Reddit scraper (v0.1.0) [Software]. https://github.com/IMNMV/reddit-scraper
+> Vitali, N. (2026). A Reddit scraper for academic research (v0.1.0) [Software]. https://github.com/IMNMV/reddit-scraper
 
 ## License
 
