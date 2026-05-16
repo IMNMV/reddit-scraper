@@ -1,4 +1,4 @@
-# reddit scraper
+# a reddit scraper
 
 Crash-safe Reddit scraper for academic NLP research. Pulls **full historical posts** via the Arctic Shift archive API (no 1,000-post Reddit listing cap) and **full comment trees** via PRAW (`replace_more(limit=None, threshold=0)`). Writes row-by-row to CSV with atomic checkpointing, so an interrupted run resumes from the last completed batch.
 
@@ -8,7 +8,7 @@ Pure Python package with a CLI. R users can drive it directly via reticulate (se
 
 ## Why this exists
 
-Pushshift, the standard tool for academic Reddit research, went down for outside-moderator use in 2023. Most public scrapers have not been updated since. Arctic Shift is the current archive replacement, but almost nothing wraps it for end users.
+Pushshift, the standard tool for academic Reddit research, went down for outside-moderator use in 2023. Most public scrapers have not been updated since. Existing tools either wrap Arctic Shift at the API level, scrape Reddit's live/public listings, or require custom scripts. This package is designed as a reproducible academic data-collection pipeline: full historical post discovery via Arctic Shift, full comment-tree hydration via PRAW, row-wise CSV output, and atomic checkpointing for multi-day runs.
 
 This package fills that gap. Key differentiators:
 
