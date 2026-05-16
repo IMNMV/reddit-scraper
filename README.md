@@ -162,6 +162,89 @@ for s in ChatGPT ClaudeAI Anthropic OpenAI; do
 done
 ```
 
+## What gets collected
+
+Each subreddit produces three files under `<base_dir>/data/raw/<subreddit_lowercase>/`:
+
+```
+posts.csv         row-per-post,    29 columns
+comments.csv     row-per-comment,  22 columns
+checkpoint.json  atomic resume state
+```
+
+Full column reference is in `docs/SCHEMAS.md`. Quick summary below.
+
+### posts.csv (29 columns)
+
+| column | type | notes |
+|---|---|---|
+| post_id | str | Reddit base36 ID |
+| subreddit | str | lowercased |
+| title | str | |
+| selftext | str | body text; empty for link posts |
+| author | str | "[deleted]" if removed |
+| author_flair | str | sparse from Arctic Shift, complete from PRAW |
+| score | int | net votes (slightly fuzzed for new posts) |
+| upvote_ratio | float | most reliable vote signal |
+| num_comments | int | Reddit-reported count |
+| url | str | post or link URL |
+| domain | str | hostname of url |
+| is_self | bool | True for text posts |
+| is_video | bool | NA on some Arctic Shift rows |
+| nsfw | bool | over_18 flag |
+| spoiler | bool | |
+| locked | bool | |
+| archived | bool | Reddit archives after 6 months |
+| distinguished | str | moderator / admin / "" |
+| stickied | bool | |
+| flair_text | str | link_flair_text |
+| flair_css_class | str | sparse from Arctic Shift |
+| created_utc | float | epoch seconds UTC |
+| created_dt | str | human-readable UTC |
+| scraped_utc | float | when row was collected |
+| gilded | int | gold-award count |
+| total_awards | int | NA on some older posts |
+| crosspost_parent | str | parent post ID if crosspost |
+| permalink | str | full Reddit URL |
+| source | str | "arctic_shift" or "reddit_api" |
+
+### comments.csv (22 columns)
+
+| column | type | notes |
+|---|---|---|
+| comment_id | str | Reddit base36 ID |
+| post_id | str | parent post ID |
+| subreddit | str | |
+| parent_id | str | t3_<post_id> or t1_<comment_id> |
+| parent_type | str | "post" or "comment" |
+| body | str | comment text |
+| author | str | "[deleted]" if removed |
+| author_flair | str | |
+| score | int | net votes |
+| ups | int | same as score post-2014 |
+| controversiality | int | Reddit flag (0 or 1) |
+| depth | int | 0 = top-level reply to the post |
+| is_submitter | bool | True if commenter is OP |
+| distinguished | str | |
+| stickied | bool | |
+| edited | bool | True if ever edited |
+| gilded | int | |
+| total_awards | int | |
+| created_utc | float | |
+| created_dt | str | |
+| scraped_utc | float | |
+| source | str | "reddit_api" or "arctic_shift" |
+
+### checkpoint.json
+
+Per-subreddit resume state. Tracks the current phase (`posts`, `comments`, or `done`), the UTC cursor for Arctic Shift pagination, the list of post IDs whose comments are already saved, and running totals. Written atomically (tmp file then rename) after every batch, so it is never half-written on crash.
+
+### What is not collected
+
+Reddit deliberately obfuscates raw upvote and downvote counts. The scraper preserves what the API returns (`score`, `upvote_ratio`, `ups`); raw up/down counts are not available from any Reddit source. The standard estimate used in published research is `est_upvotes = round(score / upvote_ratio)` and `est_downvotes = est_upvotes - score`.
+
+Private, quarantined, and banned subreddits are not accessible to read-only `client_credentials` auth. Deleted post bodies appear as `"[deleted]"` or `"[removed]"`; Arctic Shift sometimes captures the pre-deletion text because it archives at posting time, the live Reddit API does not.
+
 ## For AI agents
 
 If you are an AI agent driving this package on behalf of a user, here is the short version. Everything below is enough to run a full scrape end to end without reading any other file.
